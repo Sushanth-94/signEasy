@@ -10,3 +10,7 @@
   flex-wrap: wrap;
   background-color: cornsilk;
 }
+
+.noData {
+  margin: 20px auto;
+}
