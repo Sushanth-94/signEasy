@@ -4,8 +4,8 @@ import PictureList from "./components/PictureList";
 
 class App extends React.Component {
   state = {
-    pictures: []
-  }
+    pictures: [],
+  };
   componentDidMount() {
     this.fetchPictures();
   }
@@ -20,15 +20,23 @@ class App extends React.Component {
       clientID;
     fetch(url)
       .then((response) => response.json())
-      .then((data) => this.setState({pictures: data}))
+      .then((data) => this.setState({ pictures: data }))
       .catch((err) => console.log(err));
   };
   render() {
     return (
       <div className="container">
-        {this.state.pictures.map((pic, index) => {
-          return <PictureList key={index} url={pic.urls} desc={pic.alt_description}/>
-        })}
+        <div className="imgContainer">
+          {this.state.pictures.map((pic, index) => {
+            return (
+              <PictureList
+                key={index}
+                url={pic.urls}
+                desc={pic.alt_description}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }

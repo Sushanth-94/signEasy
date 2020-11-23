@@ -1,5 +1,12 @@
 .container {
   width: 90vw;
   border: 1px solid;
-  margin: auto;
+  margin: 30px auto;
+  border-radius: 4px;
+}
+
+.imgContainer {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: cornsilk;
 }
