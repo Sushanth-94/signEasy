@@ -7,6 +7,8 @@ class App extends React.Component {
   state = {
     pictures: [],
     searchInput: "",
+    showZoom: -1,
+    imgZoom: "",
   };
   componentDidMount() {
     this.fetchPictures();
@@ -16,7 +18,7 @@ class App extends React.Component {
     const clientID = "j1m9tHAjLDOFkedSheRYQEDKpXA-4MP_UItWcC5c5ik";
     const search = this.state.searchInput === "" ? "" : this.state.searchInput;
 
-    const url = `https://api.unsplash.com/photos/random?count=10&client_id=${clientID}&query=${search}`;
+    const url = `https://api.unsplash.com/photos/random?count=12&client_id=${clientID}&query=${search}`;
 
     fetch(url)
       .then((response) => response.json())
@@ -29,22 +31,45 @@ class App extends React.Component {
       searchInput: e.target.value,
     });
   };
+
+  onZoomHandler = (index) => {
+    if (index === this.state.showZoom) {
+      this.setState({ showZoom: -1, imgZoom: "" });
+    } else {
+      this.setState({ showZoom: index, imgZoom: "" });
+    }
+  };
+
+  onZoomIn = (e) => {
+    e.stopPropagation();
+    if (this.state.imgZoom.length > 0) {
+      this.setState({ imgZoom: "" });
+    } else {
+      this.setState({ imgZoom: "imgZoom" });
+    }
+  };
+
   render() {
     return (
-      <div className="container">
+      <div id="container" className="container">
         <SearchContainer
           onSubmitHandler={this.fetchPictures}
           searchInput={this.state.searchInput}
           onSearhHandler={(e) => this.searchHandler(e)}
         />
-        <div className="imgContainer">
+        <div className="imgContainer" ref={this.loader}>
           {this.state.pictures.length > 0 ? (
             this.state.pictures.map((pic, index) => {
               return (
                 <PictureList
                   key={index}
+                  id={index}
                   url={pic.urls}
                   desc={pic.alt_description}
+                  zoomHandler={() => this.onZoomHandler(index)}
+                  showZoom={this.state.showZoom}
+                  zoomInImg={this.onZoomIn}
+                  imgStyle={this.state.imgZoom}
                 />
               );
             })
